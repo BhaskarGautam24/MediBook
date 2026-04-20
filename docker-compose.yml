@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: medibook-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: medibook_root
+    ports:
+      - "3306:3306"
+    volumes:
+      - medibook_mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=caching_sha2_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  medibook_mysql_data:
+    driver: local

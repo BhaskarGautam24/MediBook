@@ -1,0 +1,68 @@
+# =========================
+# Java / Maven
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.ctxt
+.mtj.tmp/
+hs_err_pid*
+replay_pid*
+
+# =========================
+# IDE
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.classpath
+.project
+.factorypath
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+*.tsbuildinfo
+
+# =========================
+# Environment
+# =========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =========================
+# Docker
+# =========================
+docker/mysql/data/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# GSD temp files
+# =========================
+.gsd/case_study_text.md
+.gsd/case_study_clean.md

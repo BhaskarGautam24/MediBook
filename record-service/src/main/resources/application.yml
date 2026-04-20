@@ -1,0 +1,35 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: record-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/medibook_record?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: medibook_root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+# Cloudinary Configuration
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:your_cloud_name}
+  api-key: ${CLOUDINARY_API_KEY:your_api_key}
+  api-secret: ${CLOUDINARY_API_SECRET:your_api_secret}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.medibook.record: DEBUG
