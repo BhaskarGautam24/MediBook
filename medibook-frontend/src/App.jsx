@@ -13,12 +13,28 @@ import ProtectedRoute from './components/ProtectedRoute';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
-import PlaceholderPage from './pages/PlaceholderPage';
 
-// Dashboard Pages
-import PatientDashboard from './pages/patient/PatientDashboard';
+// Patient Pages
+import ProviderList from './pages/patient/ProviderList';
+import ProviderSlots from './pages/patient/ProviderSlots';
+import MyAppointments from './pages/patient/MyAppointments';
+
+// Provider Pages
 import ProviderDashboard from './pages/provider/ProviderDashboard';
+import ManageSlots from './pages/provider/ManageSlots';
+import ProviderAppointments from './pages/provider/ProviderAppointments';
+import ProviderEarnings from './pages/provider/ProviderEarnings';
+
+// Shared
+import Meet from './pages/Meet';
+
+// Admin Pages
+import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import ManageProviders from './pages/admin/ManageProviders';
+import ManageUsers from './pages/admin/ManageUsers';
+import AdminAppointments from './pages/admin/AdminAppointments';
+import AdminRecords from './pages/admin/AdminRecords';
 
 export default function App() {
   return (
@@ -30,8 +46,8 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/providers" element={<PlaceholderPage title="Find Doctors" description="Provider directory with search and filtering — coming in Phase 2." />} />
-            <Route path="/providers/:id" element={<PlaceholderPage title="Provider Profile" description="Detailed provider profile with availability calendar — coming in Phase 2." />} />
+            <Route path="/providers" element={<ProviderList />} />
+            <Route path="/providers/:providerId/slots" element={<ProviderSlots />} />
           </Route>
 
           {/* ===== Patient Routes ===== */}
@@ -40,11 +56,7 @@ export default function App() {
               <DashboardLayout />
             </ProtectedRoute>
           }>
-            <Route path="/patient/dashboard" element={<PatientDashboard />} />
-            <Route path="/patient/appointments" element={<PlaceholderPage title="My Appointments" description="View and manage your appointments — coming in Phase 3." />} />
-            <Route path="/patient/records" element={<PlaceholderPage title="Medical Records" description="Access your electronic medical records — coming in Phase 5." />} />
-            <Route path="/patient/notifications" element={<PlaceholderPage title="Notifications" description="In-app notifications center — coming in Phase 4." />} />
-            <Route path="/patient/settings" element={<PlaceholderPage title="Settings" description="Profile and account settings." />} />
+            <Route path="/patient/appointments" element={<MyAppointments />} />
           </Route>
 
           {/* ===== Provider Routes ===== */}
@@ -54,40 +66,45 @@ export default function App() {
             </ProtectedRoute>
           }>
             <Route path="/provider/dashboard" element={<ProviderDashboard />} />
-            <Route path="/provider/availability" element={<PlaceholderPage title="Manage Availability" description="Configure your availability slots — coming in Phase 2." />} />
-            <Route path="/provider/appointments" element={<PlaceholderPage title="Appointments" description="View and manage patient appointments — coming in Phase 3." />} />
-            <Route path="/provider/records" element={<PlaceholderPage title="Medical Records" description="Create and manage patient records — coming in Phase 5." />} />
-            <Route path="/provider/earnings" element={<PlaceholderPage title="Earnings" description="Revenue analytics and payment history — coming in Phase 4." />} />
-            <Route path="/provider/reviews" element={<PlaceholderPage title="Reviews" description="Patient reviews and ratings — coming in Phase 4." />} />
-            <Route path="/provider/settings" element={<PlaceholderPage title="Settings" description="Profile and account settings." />} />
+            <Route path="/provider/slots" element={<ManageSlots />} />
+            <Route path="/provider/appointments" element={<ProviderAppointments />} />
+            <Route path="/provider/earnings" element={<ProviderEarnings />} />
           </Route>
 
           {/* ===== Admin Routes ===== */}
           <Route element={
             <ProtectedRoute allowedRoles={['ADMIN']}>
-              <DashboardLayout />
+              <AdminLayout />
             </ProtectedRoute>
           }>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<PlaceholderPage title="User Management" description="Manage all platform users — coming in Phase 5." />} />
-            <Route path="/admin/providers" element={<PlaceholderPage title="Provider Verification" description="Review and verify provider credentials — coming in Phase 5." />} />
-            <Route path="/admin/appointments" element={<PlaceholderPage title="All Appointments" description="Platform-wide appointment monitoring — coming in Phase 5." />} />
-            <Route path="/admin/payments" element={<PlaceholderPage title="Payments" description="Transaction management — coming in Phase 5." />} />
-            <Route path="/admin/reviews" element={<PlaceholderPage title="Review Moderation" description="Moderate patient reviews — coming in Phase 5." />} />
-            <Route path="/admin/analytics" element={<PlaceholderPage title="Platform Analytics" description="Platform-wide analytics dashboard — coming in Phase 5." />} />
-            <Route path="/admin/settings" element={<PlaceholderPage title="Settings" description="Admin settings." />} />
+            <Route path="/admin/providers" element={<ManageProviders />} />
+            <Route path="/admin/users" element={<ManageUsers />} />
+            <Route path="/admin/appointments" element={<AdminAppointments />} />
+            <Route path="/admin/records" element={<AdminRecords />} />
           </Route>
+
+          {/* ===== Video Consultation Route ===== */}
+          <Route path="/meet/:id" element={
+            <ProtectedRoute allowedRoles={['PATIENT', 'PROVIDER']}>
+              <Meet />
+            </ProtectedRoute>
+          } />
 
           {/* 404 */}
           <Route path="*" element={
             <MainLayout>
-              <PlaceholderPage title="Page Not Found" description="The page you're looking for doesn't exist." />
+              <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-5">
+                <div className="bg-white border border-gray-200 rounded-xl p-16 text-center shadow-sm">
+                  <h1 className="text-5xl font-bold text-gray-900 mb-2">404</h1>
+                  <p className="text-gray-500">Page not found</p>
+                </div>
+              </div>
             </MainLayout>
           } />
         </Routes>
       </Router>
 
-      {/* Toast Notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -98,8 +115,8 @@ export default function App() {
             border: '1px solid #334155',
             fontSize: '14px',
           },
-          success: { iconTheme: { primary: '#14b8a6', secondary: '#f1f5f9' } },
-          error: { iconTheme: { primary: '#ef4444', secondary: '#f1f5f9' } },
+          success: { iconTheme: { primary: '#16a34a', secondary: '#f1f5f9' } },
+          error: { iconTheme: { primary: '#dc2626', secondary: '#f1f5f9' } },
         }}
       />
     </AuthProvider>

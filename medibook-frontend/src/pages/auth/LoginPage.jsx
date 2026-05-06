@@ -2,130 +2,113 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
-import { HiMail, HiLockClosed, HiArrowRight } from 'react-icons/hi';
-import { FcGoogle } from 'react-icons/fc';
-import { FaGithub } from 'react-icons/fa';
+import { LogIn, Activity } from 'lucide-react';
 
 export default function LoginPage() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.email || !form.password) {
-      toast.error('Please fill in all fields');
-      return;
-    }
     setLoading(true);
+    setError('');
+
     try {
       const user = await login(form);
-      toast.success(`Welcome back, ${user.fullName}!`);
-      // Redirect based on role
-      switch (user.role) {
-        case 'PATIENT': navigate('/patient/dashboard'); break;
-        case 'PROVIDER': navigate('/provider/dashboard'); break;
-        case 'ADMIN': navigate('/admin/dashboard'); break;
-        default: navigate('/');
-      }
+      toast.success(`Welcome back, ${user.name}!`);
+
+      const dashboardMap = {
+        PATIENT: '/providers',
+        PROVIDER: '/provider/dashboard',
+        ADMIN: '/admin/dashboard',
+      };
+      navigate(dashboardMap[user.role] || '/');
     } catch (err) {
-      toast.error(err.message || 'Login failed');
+      setError(err.message || 'Login failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12">
-      {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-secondary-500/10 rounded-full blur-3xl"></div>
-      </div>
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center px-5 py-12 relative overflow-hidden bg-slate-50">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 inset-x-0 h-full bg-gradient-to-br from-blue-100/40 via-transparent to-indigo-100/40 pointer-events-none" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-300/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 -right-32 w-96 h-96 bg-indigo-300/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative w-full max-w-md animate-fade-in">
-        {/* Header */}
+      <div className="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/50 rounded-3xl p-10 shadow-2xl shadow-slate-200/50 relative z-10">
         <div className="text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 shadow-xl">
-            M
+          <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center shadow-inner border border-white">
+            <LogIn className="w-8 h-8 text-blue-600" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="text-gray-400 mt-1 text-sm">Sign in to your MediBook account</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Welcome Back</h1>
+          <p className="text-sm font-medium text-slate-500 mt-2">Sign in to your MediBook account</p>
         </div>
 
-        {/* Form Card */}
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
-              <div className="relative">
-                <HiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="you@example.com"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500/50 transition-all"
-                />
-              </div>
-            </div>
+        {error && (
+          <div className="mb-6 px-4 py-3 text-sm text-red-700 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-xl flex items-center gap-2">
+            <Activity className="w-4 h-4 text-red-500 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
 
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
-              <div className="relative">
-                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-                <input
-                  type="password"
-                  value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-xl text-white placeholder-gray-500 text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500/50 transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-semibold rounded-xl hover:from-primary-500 hover:to-secondary-500 transition-all shadow-lg hover:shadow-primary-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
-            >
-              {loading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              ) : (
-                <>Sign In <HiArrowRight /></>
-              )}
-            </button>
-          </form>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-slate-700"></div>
-            <span className="text-xs text-gray-500">or continue with</span>
-            <div className="flex-1 h-px bg-slate-700"></div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="email" className="block text-sm font-bold text-slate-700 mb-2">
+              Email Address
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              className="w-full px-4 py-3 text-sm border-2 border-slate-200 rounded-xl bg-white/50 text-slate-900 outline-none focus:border-blue-500 focus:bg-white transition-all placeholder:text-slate-400 shadow-sm"
+              placeholder="you@example.com"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
-          {/* OAuth */}
-          <div className="grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center gap-2 py-2.5 bg-slate-900/50 border border-slate-600 rounded-xl text-gray-300 text-sm hover:bg-slate-700 transition-all">
-              <FcGoogle className="text-lg" /> Google
-            </button>
-            <button className="flex items-center justify-center gap-2 py-2.5 bg-slate-900/50 border border-slate-600 rounded-xl text-gray-300 text-sm hover:bg-slate-700 transition-all">
-              <FaGithub className="text-lg" /> GitHub
-            </button>
+          <div>
+            <label htmlFor="password" className="block text-sm font-bold text-slate-700 mb-2">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              className="w-full px-4 py-3 text-sm border-2 border-slate-200 rounded-xl bg-white/50 text-slate-900 outline-none focus:border-blue-500 focus:bg-white transition-all placeholder:text-slate-400 shadow-sm"
+              placeholder="Enter your password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
           </div>
-        </div>
 
-        {/* Register Link */}
-        <p className="text-center mt-6 text-sm text-gray-400">
+          <button
+            type="submit"
+            className="w-full py-3.5 text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+            disabled={loading}
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
+        </form>
+
+        <div className="text-center mt-8 text-sm font-medium text-slate-500">
           Don't have an account?{' '}
-          <Link to="/register" className="text-primary-400 hover:text-primary-300 font-medium transition-colors">
-            Create one
+          <Link to="/register" className="text-blue-600 hover:text-blue-700 font-bold hover:underline underline-offset-4 transition-all">
+            Register here
           </Link>
-        </p>
+        </div>
       </div>
     </div>
   );

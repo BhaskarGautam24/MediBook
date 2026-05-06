@@ -1,150 +1,99 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useState } from 'react';
-import { HiMenu, HiX, HiUserCircle, HiLogout, HiCog } from 'react-icons/hi';
+import NotificationBell from './NotificationBell';
+import { Stethoscope, LogOut, ChevronRight } from 'lucide-react';
 
 export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/');
   };
 
-  const getDashboardPath = () => {
+  const getDashboardLink = () => {
     if (!user) return '/';
-    switch (user.role) {
-      case 'PATIENT': return '/patient/dashboard';
-      case 'PROVIDER': return '/provider/dashboard';
-      case 'ADMIN': return '/admin/dashboard';
-      default: return '/';
-    }
+    const map = {
+      PATIENT: '/patient/appointments',
+      PROVIDER: '/provider/dashboard',
+      ADMIN: '/admin/dashboard',
+    };
+    return map[user.role] || '/';
   };
 
   return (
-    <nav className="sticky top-0 z-50 glass-dark shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:shadow-primary-500/50 transition-shadow">
-              M
+    <nav className="flex items-center justify-between px-6 md:px-12 h-20 bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-sm sticky top-0 z-50">
+      <Link to="/" className="flex items-center gap-2 text-2xl font-black tracking-tight text-slate-900 hover:opacity-80 transition-opacity">
+        <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-1.5 rounded-xl shadow-md shadow-blue-500/20">
+          <Stethoscope className="w-6 h-6 text-white" />
+        </div>
+        <span>Medi<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Book</span></span>
+      </Link>
+
+      <div className="flex items-center gap-2 md:gap-4">
+        {!isAuthenticated ? (
+          <>
+            <Link
+              to="/providers"
+              className="hidden md:block px-4 py-2 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-100 hover:text-slate-900 transition-all"
+            >
+              Find Providers
+            </Link>
+            <div className="w-px h-6 bg-slate-200 hidden md:block mx-2"></div>
+            <Link
+              to="/login"
+              className="px-5 py-2.5 text-sm font-semibold text-slate-700 rounded-xl hover:bg-slate-100 transition-all"
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="group flex items-center gap-1 px-5 py-2.5 text-sm font-semibold text-white bg-slate-900 rounded-xl hover:bg-slate-800 shadow-md shadow-slate-900/10 hover:shadow-lg transition-all"
+            >
+              Register
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/providers"
+              className="hidden md:block px-4 py-2 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-100 hover:text-slate-900 transition-all"
+            >
+              Find Providers
+            </Link>
+            <Link
+              to={getDashboardLink()}
+              className="px-4 py-2 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-100 hover:text-slate-900 transition-all"
+            >
+              Dashboard
+            </Link>
+            <div className="w-px h-6 bg-slate-200 mx-1"></div>
+            <NotificationBell />
+            <div className="flex items-center gap-3 ml-2 pl-2 border-l border-slate-200">
+              <div className="hidden sm:flex flex-col items-end">
+                <span className="text-sm font-bold text-slate-900 leading-none">{user?.name}</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-600 mt-1">
+                  {user?.role}
+                </span>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-100 to-indigo-100 flex items-center justify-center border-2 border-white shadow-sm">
+                <span className="text-blue-700 font-bold text-sm">
+                  {user?.name?.charAt(0).toUpperCase()}
+                </span>
+              </div>
             </div>
-            <span className="text-xl font-bold text-white tracking-tight">
-              Medi<span className="text-secondary-400">Book</span>
-            </span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/providers" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
-              Find Doctors
-            </Link>
-
-            {isAuthenticated ? (
-              <div className="relative">
-                <button
-                  onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-                >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white text-sm font-semibold">
-                    {user?.fullName?.charAt(0) || 'U'}
-                  </div>
-                  <span className="text-sm font-medium">{user?.fullName?.split(' ')[0]}</span>
-                </button>
-
-                {profileOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-slate-800 rounded-xl shadow-2xl border border-slate-700 py-2 animate-fade-in">
-                    <div className="px-4 py-2 border-b border-slate-700">
-                      <p className="text-sm font-semibold text-white">{user?.fullName}</p>
-                      <p className="text-xs text-gray-400">{user?.email}</p>
-                      <span className="inline-block mt-1 px-2 py-0.5 bg-primary-500/20 text-primary-300 text-xs rounded-full">
-                        {user?.role}
-                      </span>
-                    </div>
-                    <Link
-                      to={getDashboardPath()}
-                      onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white transition-colors"
-                    >
-                      <HiUserCircle className="text-lg" /> Dashboard
-                    </Link>
-                    <Link
-                      to={`/${user?.role?.toLowerCase()}/settings`}
-                      onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-slate-700 hover:text-white transition-colors"
-                    >
-                      <HiCog className="text-lg" /> Settings
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-slate-700 hover:text-red-300 transition-colors"
-                    >
-                      <HiLogout className="text-lg" /> Sign Out
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link
-                  to="/login"
-                  className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="px-4 py-2 bg-gradient-to-r from-primary-600 to-secondary-600 text-white text-sm font-medium rounded-lg hover:from-primary-500 hover:to-secondary-500 transition-all shadow-lg hover:shadow-primary-500/25"
-                >
-                  Get Started
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-gray-300 hover:text-white"
-          >
-            {mobileOpen ? <HiX className="text-2xl" /> : <HiMenu className="text-2xl" />}
-          </button>
-        </div>
+            <button
+              onClick={handleLogout}
+              className="ml-2 flex items-center justify-center p-2.5 text-slate-400 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all"
+              title="Logout"
+            >
+              <LogOut className="w-5 h-5" />
+            </button>
+          </>
+        )}
       </div>
-
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden bg-slate-800 border-t border-slate-700 animate-fade-in">
-          <div className="px-4 py-3 space-y-2">
-            <Link to="/providers" onClick={() => setMobileOpen(false)} className="block py-2 text-gray-300 hover:text-white text-sm">
-              Find Doctors
-            </Link>
-            {isAuthenticated ? (
-              <>
-                <Link to={getDashboardPath()} onClick={() => setMobileOpen(false)} className="block py-2 text-gray-300 hover:text-white text-sm">
-                  Dashboard
-                </Link>
-                <button onClick={handleLogout} className="block py-2 text-red-400 hover:text-red-300 text-sm">
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" onClick={() => setMobileOpen(false)} className="block py-2 text-gray-300 hover:text-white text-sm">
-                  Sign In
-                </Link>
-                <Link to="/register" onClick={() => setMobileOpen(false)} className="block py-2 text-primary-400 hover:text-primary-300 text-sm font-medium">
-                  Get Started
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </nav>
   );
 }

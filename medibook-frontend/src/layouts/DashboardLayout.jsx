@@ -1,117 +1,107 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import {
-  HiHome, HiCalendar, HiClipboardList, HiCreditCard,
-  HiStar, HiBell, HiDocumentText, HiUsers,
-  HiChartBar, HiCog, HiShieldCheck, HiClock
-} from 'react-icons/hi';
+  Search,
+  ClipboardList,
+  LayoutDashboard,
+  Clock,
+  Calendar,
+  Users,
+  Building2,
+  IndianRupee,
+} from 'lucide-react';
 
-/** Sidebar nav items per role */
-const navItems = {
-  PATIENT: [
-    { path: '/patient/dashboard', label: 'Dashboard', icon: HiHome },
-    { path: '/patient/appointments', label: 'My Appointments', icon: HiCalendar },
-    { path: '/patient/records', label: 'Medical Records', icon: HiDocumentText },
-    { path: '/patient/notifications', label: 'Notifications', icon: HiBell },
-  ],
-  PROVIDER: [
-    { path: '/provider/dashboard', label: 'Dashboard', icon: HiHome },
-    { path: '/provider/availability', label: 'Availability', icon: HiClock },
-    { path: '/provider/appointments', label: 'Appointments', icon: HiCalendar },
-    { path: '/provider/records', label: 'Medical Records', icon: HiDocumentText },
-    { path: '/provider/earnings', label: 'Earnings', icon: HiCreditCard },
-    { path: '/provider/reviews', label: 'Reviews', icon: HiStar },
-  ],
-  ADMIN: [
-    { path: '/admin/dashboard', label: 'Dashboard', icon: HiHome },
-    { path: '/admin/users', label: 'Users', icon: HiUsers },
-    { path: '/admin/providers', label: 'Providers', icon: HiShieldCheck },
-    { path: '/admin/appointments', label: 'Appointments', icon: HiCalendar },
-    { path: '/admin/payments', label: 'Payments', icon: HiCreditCard },
-    { path: '/admin/reviews', label: 'Reviews', icon: HiStar },
-    { path: '/admin/analytics', label: 'Analytics', icon: HiChartBar },
-  ],
+const iconMap = {
+  '🏥 Find Providers': Search,
+  '📋 My Appointments': ClipboardList,
+  '📊 Dashboard': LayoutDashboard,
+  '🕐 Manage Slots': Clock,
+  '📋 Appointments': Calendar,
+  '🏥 Providers': Building2,
+  '👥 Users': Users,
+  '💰 Earnings': IndianRupee,
+};
+
+const sidebarConfig = {
+  PATIENT: {
+    label: 'Patient Menu',
+    links: [
+      { to: '/providers', label: '🏥 Find Providers', text: 'Find Providers' },
+      { to: '/patient/appointments', label: '📋 My Appointments', text: 'My Appointments' },
+    ],
+  },
+  PROVIDER: {
+    label: 'Provider Menu',
+    links: [
+      { to: '/provider/dashboard', label: '📊 Dashboard', text: 'Dashboard' },
+      { to: '/provider/slots', label: '🕐 Manage Slots', text: 'Manage Slots' },
+      { to: '/provider/appointments', label: '📋 Appointments', text: 'Appointments' },
+      { to: '/provider/earnings', label: '💰 Earnings', text: 'Earnings' },
+    ],
+  },
+  ADMIN: {
+    label: 'Admin Menu',
+    links: [
+      { to: '/admin/dashboard', label: '📊 Dashboard', text: 'Dashboard' },
+      { to: '/admin/providers', label: '🏥 Providers', text: 'Providers' },
+      { to: '/admin/users', label: '👥 Users', text: 'Users' },
+      { to: '/admin/appointments', label: '📋 Appointments', text: 'Appointments' },
+    ],
+  },
 };
 
 export default function DashboardLayout() {
   const { user } = useAuth();
-  const location = useLocation();
-  const items = navItems[user?.role] || [];
+  const config = sidebarConfig[user?.role] || { label: 'Menu', links: [] };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex">
-      {/* Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-800/50 border-r border-slate-700/50">
-        {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-slate-700/50">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-sm shadow">M</div>
-            <span className="text-lg font-bold text-white">Medi<span className="text-secondary-400">Book</span></span>
-          </Link>
-        </div>
-
-        {/* Role Badge */}
-        <div className="px-6 py-4">
-          <div className="px-3 py-1.5 bg-primary-500/10 rounded-lg border border-primary-500/20">
-            <p className="text-xs text-primary-300 font-medium">{user?.role} Dashboard</p>
-            <p className="text-sm text-white font-semibold truncate">{user?.fullName}</p>
-          </div>
-        </div>
-
-        {/* Nav Items */}
-        <nav className="flex-1 px-3 space-y-1">
-          {items.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? 'bg-primary-500/20 text-primary-300 shadow-sm'
-                    : 'text-gray-400 hover:bg-slate-700/50 hover:text-white'
-                }`}
-              >
-                <item.icon className={`text-lg ${isActive ? 'text-primary-400' : ''}`} />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Settings */}
-        <div className="px-3 pb-4">
-          <Link
-            to={`/${user?.role?.toLowerCase()}/settings`}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-slate-700/50 hover:text-white transition-all"
-          >
-            <HiCog className="text-lg" /> Settings
-          </Link>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Bar */}
-        <header className="h-16 border-b border-slate-700/50 flex items-center justify-between px-6">
-          <h1 className="text-lg font-semibold text-white">
-            {items.find(i => i.path === location.pathname)?.label || 'Dashboard'}
-          </h1>
-          <div className="flex items-center gap-4">
-            <Link to={`/${user?.role?.toLowerCase()}/notifications`} className="relative text-gray-400 hover:text-white transition-colors">
-              <HiBell className="text-xl" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center">3</span>
-            </Link>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white text-sm font-semibold">
-              {user?.fullName?.charAt(0) || 'U'}
+    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+      <Navbar />
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Subtle Dashboard Background Effect */}
+        <div className="absolute top-0 inset-x-0 h-64 bg-gradient-to-b from-blue-100/30 to-transparent pointer-events-none" />
+        
+        <aside className="w-64 bg-white/80 backdrop-blur-xl border-r border-slate-200/60 py-6 shrink-0 h-[calc(100vh-80px)] overflow-y-auto hidden md:block shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)] relative z-10">
+          <div className="mb-6 px-4">
+            <div className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
+              {config.label}
+            </div>
+            <div className="space-y-1">
+              {config.links.map((link) => {
+                const Icon = iconMap[link.label] || ClipboardList;
+                return (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    className={({ isActive }) =>
+                      `group flex items-center gap-3 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                        isActive
+                          ? 'text-blue-700 bg-blue-50 shadow-sm shadow-blue-100'
+                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      }`
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        <div className={`p-1.5 rounded-lg transition-colors ${isActive ? 'bg-white shadow-sm text-blue-600' : 'bg-transparent text-slate-400 group-hover:text-slate-600 group-hover:bg-slate-100'}`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        {link.text}
+                      </>
+                    )}
+                  </NavLink>
+                );
+              })}
             </div>
           </div>
-        </header>
-
-        {/* Page Content */}
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="animate-fade-in">
-            <Outlet />
+        </aside>
+        
+        <main className="flex-1 overflow-y-auto h-[calc(100vh-80px)] relative z-0">
+          <div className="p-6 md:p-10 max-w-7xl mx-auto min-h-full">
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <Outlet />
+            </div>
           </div>
         </main>
       </div>

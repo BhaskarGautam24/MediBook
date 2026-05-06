@@ -1,134 +1,131 @@
 import { Link } from 'react-router-dom';
-import { HiSearch, HiCalendar, HiShieldCheck, HiChatAlt2, HiCreditCard, HiDocumentText } from 'react-icons/hi';
+import { useAuth } from '../context/AuthContext';
+import { Search, CalendarCheck, ShieldCheck, ArrowRight, Activity, HeartPulse } from 'lucide-react';
 
 const features = [
-  { icon: HiSearch, title: 'Find Specialists', desc: 'Search doctors by specialization, location, or rating', color: 'from-blue-500 to-blue-600' },
-  { icon: HiCalendar, title: 'Book Instantly', desc: 'View real-time availability and book in seconds', color: 'from-teal-500 to-teal-600' },
-  { icon: HiShieldCheck, title: 'Verified Doctors', desc: 'All providers are credential-verified by our team', color: 'from-purple-500 to-purple-600' },
-  { icon: HiCreditCard, title: 'Secure Payments', desc: 'Pay online via card, UPI, or wallet — or at clinic', color: 'from-amber-500 to-amber-600' },
-  { icon: HiDocumentText, title: 'Medical Records', desc: 'Access prescriptions and records after every visit', color: 'from-rose-500 to-rose-600' },
-  { icon: HiChatAlt2, title: 'Reviews & Ratings', desc: 'Read verified patient reviews before booking', color: 'from-indigo-500 to-indigo-600' },
+  {
+    icon: Search,
+    title: 'Find Providers',
+    description: 'Browse verified healthcare providers by specialization and book the right doctor for your needs.',
+  },
+  {
+    icon: CalendarCheck,
+    title: 'Easy Booking',
+    description: 'View real-time availability and book appointments instantly with just a few clicks.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Verified Doctors',
+    description: 'All healthcare providers are verified by our admin team to ensure quality and trust.',
+  },
 ];
 
 export default function HomePage() {
+  const { isAuthenticated, user } = useAuth();
+
+  const getDashboardLink = () => {
+    if (!user) return '/login';
+    const map = {
+      PATIENT: '/providers',
+      PROVIDER: '/provider/dashboard',
+      ADMIN: '/admin/dashboard',
+    };
+    return map[user.role] || '/';
+  };
+
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Background Glow */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-secondary-500/20 rounded-full blur-3xl"></div>
+    <div className="min-h-screen bg-slate-50 overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-blue-100/50 to-transparent pointer-events-none" />
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-40 -left-40 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Hero */}
+      <section className="relative pt-32 pb-20 px-5 max-w-4xl mx-auto text-center z-10">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-8 shadow-sm">
+          <Activity className="w-4 h-4" />
+          <span>Modern Healthcare Access</span>
         </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 py-24 sm:py-32">
-          <div className="text-center max-w-3xl mx-auto">
-            <div className="inline-block mb-6 px-4 py-1.5 bg-primary-500/10 border border-primary-500/20 rounded-full">
-              <span className="text-sm text-primary-300 font-medium">🏥 Trusted by 10,000+ patients</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-              Book Smarter.<br />
-              <span className="gradient-text">Heal Faster.</span><br />
-              Care Better.
-            </h1>
-
-            <p className="text-lg text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Find top healthcare providers, view their real-time availability, and book appointments instantly — all from one unified platform.
-            </p>
-
-            {/* Search Bar */}
-            <div className="max-w-xl mx-auto mb-8">
-              <div className="flex items-center bg-slate-800/80 border border-slate-700 rounded-xl p-2 shadow-2xl hover:border-primary-500/50 transition-colors">
-                <HiSearch className="text-gray-400 text-xl ml-3" />
-                <input
-                  type="text"
-                  placeholder="Search by doctor name, specialization, or location..."
-                  className="flex-1 bg-transparent text-white placeholder-gray-500 px-3 py-2 text-sm focus:outline-none"
-                />
-                <Link
-                  to="/providers"
-                  className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-secondary-600 text-white text-sm font-medium rounded-lg hover:from-primary-500 hover:to-secondary-500 transition-all shadow-lg"
-                >
-                  Search
-                </Link>
-              </div>
-            </div>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight">
+          Book Smarter. <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+            Heal Faster. Care Better.
+          </span>
+        </h1>
+        <p className="text-lg md:text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto font-medium">
+          MediBook connects patients with verified healthcare providers.
+          Search doctors, view available slots, and book appointments —
+          all in one seamless, secure platform.
+        </p>
+        <div className="flex gap-4 justify-center flex-col sm:flex-row items-center">
+          {isAuthenticated ? (
+            <Link
+              to={getDashboardLink()}
+              className="group inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-300"
+            >
+              Go to Dashboard
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          ) : (
+            <>
               <Link
                 to="/register"
-                className="px-8 py-3.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-xl hover:from-primary-500 hover:to-primary-600 transition-all shadow-xl hover:shadow-primary-500/25 text-sm"
+                className="group inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto justify-center"
               >
-                Get Started — It's Free
+                Get Started
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                to="/providers"
-                className="px-8 py-3.5 bg-slate-800 text-gray-300 font-semibold rounded-xl border border-slate-700 hover:bg-slate-700 hover:text-white transition-all text-sm"
+                to="/login"
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-slate-700 bg-white border-2 border-slate-200 rounded-xl hover:border-slate-300 hover:bg-slate-50 hover:-translate-y-0.5 transition-all duration-300 w-full sm:w-auto"
               >
-                Browse Doctors
+                Login
               </Link>
-            </div>
+            </>
+          )}
+        </div>
+      </section>
+
+      {/* Stats Section (Visual placeholder) */}
+      <section className="relative z-10 max-w-5xl mx-auto px-5 mb-24">
+        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col md:flex-row justify-around items-center gap-8 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+          <div className="text-center px-8 w-full">
+            <div className="text-4xl font-extrabold text-blue-600 mb-2">500+</div>
+            <div className="text-slate-500 font-medium">Verified Specialists</div>
+          </div>
+          <div className="text-center px-8 w-full pt-8 md:pt-0">
+            <div className="text-4xl font-extrabold text-indigo-600 mb-2">24/7</div>
+            <div className="text-slate-500 font-medium">Instant Booking</div>
+          </div>
+          <div className="text-center px-8 w-full pt-8 md:pt-0">
+            <div className="text-4xl font-extrabold text-blue-600 mb-2">99%</div>
+            <div className="text-slate-500 font-medium">Patient Satisfaction</div>
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-white mb-4">Everything You Need</h2>
-          <p className="text-gray-400 max-w-xl mx-auto">A complete healthcare booking platform designed for patients, providers, and administrators.</p>
+      <section className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 px-5 pb-32 max-w-6xl mx-auto">
+        <div className="md:col-span-3 text-center mb-12">
+          <HeartPulse className="w-12 h-12 text-blue-500 mx-auto mb-4" />
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Why Choose MediBook?</h2>
+          <p className="text-slate-500 max-w-2xl mx-auto">Experience a new standard of healthcare management tailored for your convenience and peace of mind.</p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((f, i) => (
-            <div
-              key={i}
-              className="group p-6 bg-slate-800/50 border border-slate-700/50 rounded-2xl hover:border-primary-500/30 hover:bg-slate-800 transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center text-white text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform`}>
-                <f.icon />
-              </div>
-              <h3 className="text-lg font-semibold text-white mb-2">{f.title}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="border-y border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { val: '10K+', label: 'Patients' },
-              { val: '500+', label: 'Verified Doctors' },
-              { val: '50K+', label: 'Appointments Booked' },
-              { val: '4.8★', label: 'Average Rating' },
-            ].map((s, i) => (
-              <div key={i} className="text-center">
-                <p className="text-3xl font-bold gradient-text mb-1">{s.val}</p>
-                <p className="text-sm text-gray-500">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary-600 to-secondary-600 p-12 text-center">
-          <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/10 rounded-full blur-2xl"></div>
-          <h2 className="text-3xl font-bold text-white mb-4">Ready to Book Your Appointment?</h2>
-          <p className="text-primary-100 mb-8 max-w-lg mx-auto">Join thousands of patients who trust MediBook for their healthcare needs.</p>
-          <Link
-            to="/register"
-            className="inline-block px-8 py-3.5 bg-white text-primary-700 font-semibold rounded-xl hover:bg-gray-100 transition-all shadow-xl text-sm"
+        {features.map((feature, idx) => (
+          <div
+            key={feature.title}
+            className="group bg-white/80 backdrop-blur-md border border-white/40 rounded-2xl p-8 text-center shadow-lg shadow-slate-200/40 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
           >
-            Create Free Account
-          </Link>
-        </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-110 z-0" />
+            <div className="relative z-10">
+              <div className="w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center shadow-inner">
+                <feature.icon className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+              <p className="text-slate-600 leading-relaxed font-medium">{feature.description}</p>
+            </div>
+          </div>
+        ))}
       </section>
     </div>
   );
