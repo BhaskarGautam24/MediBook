@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
-import { Building2, MapPin, Clock, ArrowRight } from 'lucide-react';
+import { Building2, MapPin, Clock, ArrowRight, Star } from 'lucide-react';
 
 export default function ProviderList() {
   const [providers, setProviders] = useState([]);
@@ -73,6 +73,16 @@ export default function ProviderList() {
               <div>
                 <div className="text-base font-semibold text-gray-900">{provider.userName}</div>
                 <div className="text-sm font-medium text-blue-600">{provider.specialization}</div>
+              </div>
+              {/* Star rating display */}
+              <div className="flex items-center gap-1.5">
+                <div className="flex">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star key={star} className={`w-4 h-4 ${star <= Math.round(provider.averageRating || 0) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />
+                  ))}
+                </div>
+                <span className="text-sm font-medium text-gray-700">{provider.averageRating || '0.0'}</span>
+                <span className="text-xs text-gray-400">({provider.totalReviews || 0} reviews)</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-500">
                 <Building2 className="w-4 h-4 text-gray-400" />

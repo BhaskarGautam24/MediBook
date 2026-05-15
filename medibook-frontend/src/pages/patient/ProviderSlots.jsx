@@ -17,6 +17,17 @@ const PAYMENT_MODES = [
   { id: 'NETBANKING', label: 'Net Banking', icon: Building, desc: 'All major banks' },
 ];
 
+const loadScript = (src) => {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
+
 export default function ProviderSlots() {
   const { isAuthenticated, user } = useAuth();
   const { providerId } = useParams();
@@ -28,14 +39,19 @@ export default function ProviderSlots() {
   const [bookingSlot, setBookingSlot] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Reviews state
+  const [reviews, setReviews] = useState([]);
+  const [ratingSummary, setRatingSummary] = useState({ averageRating: 0, totalReviews: 0 });
+
   // Payment flow state
-  const [paymentStep, setPaymentStep] = useState('choose'); // 'choose' | 'processing' | 'success' | 'failed'
-  const [paymentType, setPaymentType] = useState(null); // 'online' | 'cash'
+  const [paymentStep, setPaymentStep] = useState('choose');
+  const [paymentType, setPaymentType] = useState(null);
   const [selectedMode, setSelectedMode] = useState('UPI');
 
   useEffect(() => {
     loadProvider();
     loadSlots();
+    loadReviews();
   }, [providerId]);
 
   const loadProvider = async () => {
@@ -46,6 +62,17 @@ export default function ProviderSlots() {
       toast.error('Provider not found');
       navigate('/providers');
     }
+  };
+
+  const loadReviews = async () => {
+    try {
+      const [reviewPage, summary] = await Promise.all([
+        api.get(`/reviews/provider/${providerId}?page=0&size=5`),
+        api.get(`/reviews/provider/${providerId}/summary`),
+      ]);
+      setReviews(reviewPage.content || []);
+      setRatingSummary(summary);
+    } catch { /* reviews not critical */ }
   };
 
   const loadSlots = async () => {
@@ -96,6 +123,18 @@ export default function ProviderSlots() {
       const gateway = bookResult.gateway;
 
       if (gateway === 'razorpay') {
+        let isLoaded = !!window.Razorpay;
+        if (!isLoaded) {
+          isLoaded = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+        }
+        
+        if (!isLoaded || !window.Razorpay) {
+          toast.error('Razorpay SDK failed to load. Are you using an adblocker?');
+          setPaymentStep('failed');
+          setIsSubmitting(false);
+          return;
+        }
+
         let rzpSuccess = false;
         const options = {
           key: import.meta.env.VITE_RAZORPAY_KEY, // Set this in .env
@@ -298,6 +337,16 @@ export default function ProviderSlots() {
                       <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                       <span>{provider.experienceYears} Years Experience</span>
                     </div>
+                    {/* Rating display */}
+                    <div className="flex items-center gap-2 text-sm justify-center lg:justify-start">
+                      <div className="flex">
+                        {[1,2,3,4,5].map(s => (
+                          <Star key={s} className={`w-4 h-4 ${s <= Math.round(ratingSummary.averageRating || 0) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />
+                        ))}
+                      </div>
+                      <span className="font-medium text-gray-700">{ratingSummary.averageRating || '0.0'}</span>
+                      <span className="text-gray-400">({ratingSummary.totalReviews || 0} reviews)</span>
+                    </div>
                     <div className="flex items-center gap-3 text-sm text-gray-600 justify-center lg:justify-start">
                       <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
                       <span className="line-clamp-2">{provider.clinicName}, {provider.clinicAddress}</span>
@@ -329,6 +378,34 @@ export default function ProviderSlots() {
               </li>
             </ul>
           </div>
+
+          {/* Patient Reviews Section */}
+          {reviews.length > 0 && (
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                Patient Reviews ({ratingSummary.totalReviews})
+              </h3>
+              <div className="space-y-4">
+                {reviews.map((r) => (
+                  <div key={r.id} className="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="flex">
+                        {[1,2,3,4,5].map(s => (
+                          <Star key={s} className={`w-3 h-3 ${s <= r.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />
+                        ))}
+                      </div>
+                      {r.isVerified && <ShieldCheck className="w-3.5 h-3.5 text-green-500" />}
+                    </div>
+                    {r.comment && <p className="text-sm text-gray-600 mb-1">{r.comment}</p>}
+                    <p className="text-xs text-gray-400">
+                      {r.patientName} • {new Date(r.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Column: Calendar */}

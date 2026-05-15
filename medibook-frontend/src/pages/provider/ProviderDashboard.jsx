@@ -88,18 +88,12 @@ export default function ProviderDashboard() {
     { label: 'Completed', value: stats.completedAppointments, icon: CheckCircle2 },
   ];
 
-  // Use real earnings data for chart (last payments), or empty
-  const earningsChartData = earnings?.recentPayments
-    ? earnings.recentPayments
-        .filter(p => p.status === 'PAID')
-        .slice(0, 7)
-        .reverse()
-        .map((p, i) => ({
-          name: p.paidAt
-            ? new Date(p.paidAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })
-            : `#${i + 1}`,
-          earnings: p.amount || 0,
-        }))
+  // Use daily breakdown from backend (properly aggregated by date, refunds subtracted)
+  const earningsChartData = earnings?.dailyBreakdown
+    ? earnings.dailyBreakdown.map((d) => ({
+        name: new Date(d.date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }),
+        earnings: d.amount || 0,
+      }))
     : [];
 
   return (

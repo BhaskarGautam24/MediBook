@@ -37,7 +37,10 @@ export default function MyAppointments() {
   // PDF Features: Review & Video states
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
-  const [reviewForm, setReviewForm] = useState({ rating: 0, comment: '' });
+  const [reviewForm, setReviewForm] = useState({ rating: 0, comment: '', isAnonymous: false });
+  const [selectedAptForReview, setSelectedAptForReview] = useState(null);
+  const [reviewedAppointments, setReviewedAppointments] = useState(new Set());
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
     loadAppointments();
@@ -47,6 +50,16 @@ export default function MyAppointments() {
     try {
       const data = await api.get('/appointments/my');
       setAppointments(data);
+      // Check which completed appointments already have reviews
+      const completed = data.filter(a => a.status === 'COMPLETED');
+      const reviewed = new Set();
+      for (const apt of completed) {
+        try {
+          const result = await api.get(`/reviews/check/${apt.id}`);
+          if (result.reviewed) reviewed.add(apt.id);
+        } catch { /* ignore */ }
+      }
+      setReviewedAppointments(reviewed);
     } catch (err) {
       console.error('Failed to load appointments:', err);
     } finally {
@@ -97,18 +110,42 @@ export default function MyAppointments() {
     }
   };
 
+  const openReviewModal = (apt) => {
+    setSelectedAptForReview(apt);
+    setReviewForm({ rating: 0, comment: '', isAnonymous: false });
+    setIsReviewOpen(true);
+  };
+
   const closeRecordModal = () => { setIsRecordModalOpen(false); setSelectedRecord(null); };
   const closeInvoiceModal = () => { setIsInvoiceOpen(false); setInvoiceData(null); };
 
-  const submitReview = (e) => {
+  const submitReview = async (e) => {
     e.preventDefault();
-    if (!reviewForm.rating || !reviewForm.comment) {
-      toast.error('Please provide a rating and comment');
+    if (!reviewForm.rating) {
+      toast.error('Please select a star rating');
       return;
     }
-    toast.success('Review submitted! (Dummy endpoint)');
-    setIsReviewOpen(false);
-    setReviewForm({ rating: 0, comment: '' });
+    if (!selectedAptForReview) return;
+
+    setSubmittingReview(true);
+    try {
+      await api.post('/reviews', {
+        appointmentId: selectedAptForReview.id,
+        rating: reviewForm.rating,
+        comment: reviewForm.comment || '',
+        isAnonymous: reviewForm.isAnonymous,
+      });
+      toast.success('Review submitted successfully!');
+      setIsReviewOpen(false);
+      setReviewForm({ rating: 0, comment: '', isAnonymous: false });
+      setSelectedAptForReview(null);
+      // Mark as reviewed
+      setReviewedAppointments(prev => new Set([...prev, selectedAptForReview.id]));
+    } catch (err) {
+      toast.error(err.message || 'Failed to submit review');
+    } finally {
+      setSubmittingReview(false);
+    }
   };
 
   if (loading) {
@@ -208,12 +245,18 @@ export default function MyAppointments() {
                                 <FileText className="w-3.5 h-3.5" /> Invoice
                               </button>
                             )}
-                            <button
-                              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-amber-600 bg-amber-50 rounded-lg hover:bg-amber-100 border border-amber-200 transition-colors cursor-pointer"
-                              onClick={() => setIsReviewOpen(true)}
-                            >
-                              <Star className="w-3.5 h-3.5" /> Rate
-                            </button>
+                            {reviewedAppointments.has(apt.id) ? (
+                              <span className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-600 bg-green-50 rounded-lg border border-green-200">
+                                <Star className="w-3.5 h-3.5 fill-green-500" /> Reviewed
+                              </span>
+                            ) : (
+                              <button
+                                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-amber-600 bg-amber-50 rounded-lg hover:bg-amber-100 border border-amber-200 transition-colors cursor-pointer"
+                                onClick={() => openReviewModal(apt)}
+                              >
+                                <Star className="w-3.5 h-3.5" /> Rate
+                              </button>
+                            )}
                           </>
                         )}
                         {apt.status === 'CANCELLED' && (
@@ -367,12 +410,17 @@ export default function MyAppointments() {
         </div>
       )}
 
-      {/* Review Modal (Dummy) */}
+      {/* Review Modal */}
       {isReviewOpen && (
         <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 px-4">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6">
             <div className="flex justify-between items-center mb-5 pb-4 border-b border-gray-200">
-              <h2 className="text-lg font-bold text-gray-900">Rate Provider</h2>
+              <div>
+                <h2 className="text-lg font-bold text-gray-900">Rate Provider</h2>
+                {selectedAptForReview && (
+                  <p className="text-xs text-gray-400 mt-0.5">Dr. {selectedAptForReview.providerName} — {selectedAptForReview.slotDate}</p>
+                )}
+              </div>
               <button onClick={() => setIsReviewOpen(false)} className="text-gray-400 hover:text-gray-600 cursor-pointer p-1">
                 <X className="w-5 h-5" />
               </button>
@@ -394,13 +442,24 @@ export default function MyAppointments() {
                 <textarea
                   value={reviewForm.comment}
                   onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
-                  placeholder="Share your experience..."
+                  placeholder="Share your experience... (optional)"
+                  maxLength={1000}
                   className="w-full p-3 border border-gray-300 rounded-lg resize-none h-28 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all"
                 />
+                <p className="text-xs text-gray-400 mt-1 text-right">{reviewForm.comment.length}/1000</p>
               </div>
-              <button type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 font-medium transition-colors cursor-pointer">
-                Submit Review
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={reviewForm.isAnonymous}
+                  onChange={(e) => setReviewForm({ ...reviewForm, isAnonymous: e.target.checked })}
+                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-600">Post anonymously</span>
+              </label>
+              <button type="submit" disabled={submittingReview || !reviewForm.rating}
+                className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 font-medium transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                {submittingReview ? 'Submitting...' : 'Submit Review'}
               </button>
             </form>
           </div>

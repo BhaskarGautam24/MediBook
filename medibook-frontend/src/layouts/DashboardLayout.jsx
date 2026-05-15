@@ -10,6 +10,9 @@ import {
   Users,
   Building2,
   IndianRupee,
+  Star,
+  Settings,
+  UserCog,
 } from 'lucide-react';
 
 const iconMap = {
@@ -21,6 +24,9 @@ const iconMap = {
   '🏥 Providers': Building2,
   '👥 Users': Users,
   '💰 Earnings': IndianRupee,
+  '⭐ Reviews': Star,
+  '⚙️ Settings': Settings,
+  '👤 Edit Profile': UserCog,
 };
 
 const sidebarConfig = {
@@ -29,6 +35,7 @@ const sidebarConfig = {
     links: [
       { to: '/providers', label: '🏥 Find Providers', text: 'Find Providers' },
       { to: '/patient/appointments', label: '📋 My Appointments', text: 'My Appointments' },
+      { to: '/patient/settings', label: '⚙️ Settings', text: 'Settings' },
     ],
   },
   PROVIDER: {
@@ -38,6 +45,9 @@ const sidebarConfig = {
       { to: '/provider/slots', label: '🕐 Manage Slots', text: 'Manage Slots' },
       { to: '/provider/appointments', label: '📋 Appointments', text: 'Appointments' },
       { to: '/provider/earnings', label: '💰 Earnings', text: 'Earnings' },
+      { to: '/provider/reviews', label: '⭐ Reviews', text: 'Reviews' },
+      { to: '/provider/profile', label: '👤 Edit Profile', text: 'Edit Profile' },
+      { to: '/provider/settings', label: '⚙️ Settings', text: 'Settings' },
     ],
   },
   ADMIN: {

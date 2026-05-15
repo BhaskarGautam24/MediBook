@@ -8,6 +8,8 @@ import {
   FileText,
   LogOut,
   Stethoscope,
+  Star,
+  Settings,
 } from 'lucide-react';
 
 const navItems = [
@@ -16,6 +18,8 @@ const navItems = [
   { to: '/admin/providers', icon: Building2, label: 'Providers' },
   { to: '/admin/appointments', icon: Calendar, label: 'Appointments' },
   { to: '/admin/records', icon: FileText, label: 'Records' },
+  { to: '/admin/reviews', icon: Star, label: 'Reviews' },
+  { to: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
 
 export default function AdminLayout() {

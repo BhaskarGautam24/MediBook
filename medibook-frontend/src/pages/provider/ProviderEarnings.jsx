@@ -104,15 +104,11 @@ export default function ProviderEarnings() {
     { name: 'Refunded', value: earnings.refundedPayments || 0 },
   ].filter(d => d.value > 0);
 
-  // Recent payments for bar chart
-  const recentForChart = (earnings.recentPayments || [])
-    .filter(p => p.status === 'PAID')
-    .slice(0, 7)
-    .reverse()
-    .map((p, i) => ({
-      name: p.paidAt ? new Date(p.paidAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) : `#${i + 1}`,
-      amount: p.amount || 0,
-    }));
+  // Use daily breakdown from backend (properly aggregated by date, refunds subtracted)
+  const recentForChart = (earnings.dailyBreakdown || []).map((d) => ({
+    name: new Date(d.date + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }),
+    amount: d.amount || 0,
+  }));
 
   return (
     <div>

@@ -12,8 +12,19 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/admin/dashboard')
-      .then((res) => setStats(res))
+    Promise.all([
+      api.get('/admin/users'),
+      api.get('/admin/providers'),
+      api.get('/admin/appointments')
+    ])
+      .then(([users, providers, appointments]) => {
+        setStats({
+          totalUsers: users.length,
+          totalProviders: providers.length,
+          totalAppointments: appointments.length,
+          completedAppointments: appointments.filter(a => a.status === 'COMPLETED').length,
+        });
+      })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
