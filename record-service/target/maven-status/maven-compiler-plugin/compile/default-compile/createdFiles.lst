@@ -1,0 +1,13 @@
+com\medibook\record\config\OpenApiConfig.class
+com\medibook\record\repository\RecordRepository.class
+com\medibook\record\RecordServiceApplication.class
+com\medibook\record\client\ProviderClient.class
+com\medibook\record\exception\GlobalExceptionHandler.class
+com\medibook\record\entity\MedicalRecord$MedicalRecordBuilder.class
+com\medibook\record\dto\MedicalRecordRequest.class
+com\medibook\record\client\AppointmentClient.class
+com\medibook\record\controller\MedicalRecordController.class
+com\medibook\record\entity\MedicalRecord.class
+com\medibook\record\client\NotificationClient.class
+com\medibook\record\service\MedicalRecordService.class
+com\medibook\record\client\AuthClient.class

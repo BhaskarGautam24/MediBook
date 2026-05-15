@@ -1,0 +1,16 @@
+com\medibook\schedule\entity\Slot.class
+com\medibook\schedule\scheduler\SlotCleanupScheduler.class
+com\medibook\schedule\controller\InternalSlotController.class
+com\medibook\schedule\entity\Slot$SlotBuilder.class
+com\medibook\schedule\config\OpenApiConfig.class
+com\medibook\schedule\enums\RecurrenceType.class
+com\medibook\schedule\client\AppointmentClient.class
+com\medibook\schedule\client\ProviderClient.class
+com\medibook\schedule\repository\SlotRepository.class
+com\medibook\schedule\controller\SlotController.class
+com\medibook\schedule\dto\BulkSlotRequest.class
+com\medibook\schedule\exception\GlobalExceptionHandler.class
+com\medibook\schedule\service\SlotService.class
+com\medibook\schedule\ScheduleServiceApplication.class
+com\medibook\schedule\dto\SlotRequest.class
+com\medibook\schedule\dto\RecurringSlotRequest.class

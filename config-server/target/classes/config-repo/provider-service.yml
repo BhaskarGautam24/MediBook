@@ -1,0 +1,14 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/provider_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: Password@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+cloudinary:
+  cloud-name: dtdo0h6el
+  api-key: "961162622645227"
+  api-secret: 2OCTiO2DI23vgWFoib6Vg_mvEno

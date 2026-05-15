@@ -1,0 +1,18 @@
+server:
+  port: 8085
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/payment_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: Password@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+payment:
+  gateway: razorpay
+  cancellation-window-hours: 24
+  razorpay:
+    key-id: "rzp_test_SlfNRGdl1bjXg9"
+    key-secret: "Ak0vKIqhqZ9Q1yit31o1Msms"
+  stripe:
+    secret-key: ""

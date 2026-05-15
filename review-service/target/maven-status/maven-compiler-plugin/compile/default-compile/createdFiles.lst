@@ -1,0 +1,15 @@
+com\medibook\review\dto\ReviewResponse$ReviewResponseBuilder.class
+com\medibook\review\ReviewServiceApplication.class
+com\medibook\review\client\ProviderClient.class
+com\medibook\review\controller\ReviewController.class
+com\medibook\review\repository\ReviewRepository.class
+com\medibook\review\dto\ReviewResponse.class
+com\medibook\review\exception\GlobalExceptionHandler.class
+com\medibook\review\config\OpenApiConfig.class
+com\medibook\review\dto\ReviewRequest.class
+com\medibook\review\client\AuthClient.class
+com\medibook\review\entity\Review.class
+com\medibook\review\service\ReviewService.class
+com\medibook\review\client\NotificationClient.class
+com\medibook\review\client\AppointmentClient.class
+com\medibook\review\entity\Review$ReviewBuilder.class

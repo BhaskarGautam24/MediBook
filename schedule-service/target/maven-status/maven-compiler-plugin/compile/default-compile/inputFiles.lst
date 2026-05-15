@@ -1,0 +1,15 @@
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\client\AppointmentClient.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\client\ProviderClient.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\config\OpenApiConfig.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\controller\InternalSlotController.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\controller\SlotController.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\dto\BulkSlotRequest.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\dto\RecurringSlotRequest.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\dto\SlotRequest.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\entity\Slot.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\enums\RecurrenceType.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\exception\GlobalExceptionHandler.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\repository\SlotRepository.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\scheduler\SlotCleanupScheduler.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\ScheduleServiceApplication.java
+D:\MediBook\schedule-service\src\main\java\com\medibook\schedule\service\SlotService.java

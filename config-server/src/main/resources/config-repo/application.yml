@@ -1,0 +1,36 @@
+# Shared configuration for all MediBook microservices
+# Each service overrides what it needs in its own config file
+
+server:
+  forward-headers-strategy: framework
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+# JWT Configuration (shared across gateway + auth-service)
+app:
+  jwt:
+    secret: MediBookSecretKey2026ForJWTTokenSigningPurposeMustBe256BitsLongAtLeast
+    access-token-expiration-ms: 900000
+    refresh-token-expiration-ms: 604800000
+  frontend-url: http://localhost:5173
+
+# Eureka registration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true

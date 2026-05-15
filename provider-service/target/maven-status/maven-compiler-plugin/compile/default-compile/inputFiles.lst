@@ -1,0 +1,16 @@
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\client\AuthClient.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\client\NotificationClient.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\config\CloudinaryConfig.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\config\OpenApiConfig.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\controller\AdminProviderController.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\controller\InternalProviderController.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\controller\ProviderController.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\dto\ProviderProfileUpdateRequest.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\entity\Provider.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\enums\ProviderStatus.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\exception\GlobalExceptionHandler.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\ProviderServiceApplication.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\repository\ProviderRepository.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\service\CloudinaryService.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\service\impl\CloudinaryServiceImpl.java
+D:\MediBook\provider-service\src\main\java\com\medibook\provider\service\ProviderService.java

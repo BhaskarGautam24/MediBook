@@ -1,0 +1,15 @@
+com\medibook\notification\enums\NotificationChannel.class
+com\medibook\notification\controller\NotificationController.class
+com\medibook\notification\service\NotificationService.class
+com\medibook\notification\controller\InternalNotificationController.class
+com\medibook\notification\enums\RelatedType.class
+com\medibook\notification\enums\ReminderStatus.class
+com\medibook\notification\config\OpenApiConfig.class
+com\medibook\notification\dto\NotificationDTO.class
+com\medibook\notification\enums\NotificationType.class
+com\medibook\notification\exception\GlobalExceptionHandler.class
+com\medibook\notification\repository\NotificationRepository.class
+com\medibook\notification\dto\NotificationDTO$NotificationDTOBuilder.class
+com\medibook\notification\NotificationServiceApplication.class
+com\medibook\notification\entity\Notification$NotificationBuilder.class
+com\medibook\notification\entity\Notification.class

@@ -1,0 +1,17 @@
+com\medibook\provider\entity\Provider$ProviderBuilder.class
+com\medibook\provider\exception\GlobalExceptionHandler.class
+com\medibook\provider\service\impl\CloudinaryServiceImpl.class
+com\medibook\provider\config\CloudinaryConfig.class
+com\medibook\provider\controller\AdminProviderController.class
+com\medibook\provider\client\AuthClient.class
+com\medibook\provider\config\OpenApiConfig.class
+com\medibook\provider\entity\Provider.class
+com\medibook\provider\dto\ProviderProfileUpdateRequest.class
+com\medibook\provider\service\ProviderService.class
+com\medibook\provider\ProviderServiceApplication.class
+com\medibook\provider\controller\InternalProviderController.class
+com\medibook\provider\service\CloudinaryService.class
+com\medibook\provider\repository\ProviderRepository.class
+com\medibook\provider\controller\ProviderController.class
+com\medibook\provider\client\NotificationClient.class
+com\medibook\provider\enums\ProviderStatus.class

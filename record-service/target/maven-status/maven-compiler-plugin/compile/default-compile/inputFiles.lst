@@ -1,0 +1,13 @@
+D:\MediBook\record-service\src\main\java\com\medibook\record\client\AppointmentClient.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\client\AuthClient.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\client\NotificationClient.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\client\ProviderClient.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\config\OpenApiConfig.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\controller\AdminRecordController.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\controller\MedicalRecordController.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\dto\MedicalRecordRequest.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\entity\MedicalRecord.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\exception\GlobalExceptionHandler.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\RecordServiceApplication.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\repository\RecordRepository.java
+D:\MediBook\record-service\src\main\java\com\medibook\record\service\MedicalRecordService.java

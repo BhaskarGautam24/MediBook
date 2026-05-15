@@ -1,0 +1,13 @@
+D:\MediBook\review-service\src\main\java\com\medibook\review\client\AppointmentClient.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\client\AuthClient.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\client\NotificationClient.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\client\ProviderClient.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\config\OpenApiConfig.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\controller\ReviewController.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\dto\ReviewRequest.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\dto\ReviewResponse.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\entity\Review.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\exception\GlobalExceptionHandler.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\repository\ReviewRepository.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\ReviewServiceApplication.java
+D:\MediBook\review-service\src\main\java\com\medibook\review\service\ReviewService.java

@@ -1,0 +1,60 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2026-05-14T01:33:54.597+05:30  INFO 25420 --- [eureka-server] [           main] c.m.eureka.EurekaServerApplication       : Starting EurekaServerApplication v1.0.0 using Java 24.0.1 with PID 25420 (D:\MediBook\eureka-server\target\eureka-server-1.0.0.jar started by hp in D:\MediBook)
+2026-05-14T01:33:54.603+05:30  INFO 25420 --- [eureka-server] [           main] c.m.eureka.EurekaServerApplication       : No active profile set, falling back to 1 default profile: "default"
+2026-05-14T01:33:56.213+05:30  INFO 25420 --- [eureka-server] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=cbb08d38-1e7b-36ac-b335-b20a005ab8f7
+2026-05-14T01:33:56.766+05:30  INFO 25420 --- [eureka-server] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8761 (http)
+2026-05-14T01:33:56.794+05:30  INFO 25420 --- [eureka-server] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-05-14T01:33:56.795+05:30  INFO 25420 --- [eureka-server] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2026-05-14T01:33:56.848+05:30  INFO 25420 --- [eureka-server] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-05-14T01:33:56.849+05:30  INFO 25420 --- [eureka-server] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2162 ms
+2026-05-14T01:33:58.283+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2026-05-14T01:33:58.284+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2026-05-14T01:33:58.622+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2026-05-14T01:33:58.622+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2026-05-14T01:33:58.806+05:30  INFO 25420 --- [eureka-server] [           main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2026-05-14T01:33:59.928+05:30  WARN 25420 --- [eureka-server] [           main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-05-14T01:33:59.976+05:30  INFO 25420 --- [eureka-server] [           main] o.s.c.n.eureka.InstanceInfoFactory       : Setting initial instance status as: STARTING
+2026-05-14T01:34:00.029+05:30  INFO 25420 --- [eureka-server] [           main] com.netflix.discovery.DiscoveryClient    : Initializing Eureka in region us-east-1
+2026-05-14T01:34:00.031+05:30  INFO 25420 --- [eureka-server] [           main] com.netflix.discovery.DiscoveryClient    : Client configured to neither register nor query for data.
+2026-05-14T01:34:00.036+05:30  INFO 25420 --- [eureka-server] [           main] com.netflix.discovery.DiscoveryClient    : Discovery Client initialized at timestamp 1778702640034 with initial instances count: 0
+2026-05-14T01:34:00.104+05:30  INFO 25420 --- [eureka-server] [           main] c.n.eureka.DefaultEurekaServerContext    : Initializing ...
+2026-05-14T01:34:00.107+05:30  INFO 25420 --- [eureka-server] [           main] c.n.eureka.cluster.PeerEurekaNodes       : Adding new peer nodes [http://localhost:8761/eureka/]
+2026-05-14T01:34:00.232+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON encoding codec LegacyJacksonJson
+2026-05-14T01:34:00.233+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using JSON decoding codec LegacyJacksonJson
+2026-05-14T01:34:00.233+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML encoding codec XStreamXml
+2026-05-14T01:34:00.233+05:30  INFO 25420 --- [eureka-server] [           main] c.n.d.provider.DiscoveryJerseyProvider   : Using XML decoding codec XStreamXml
+2026-05-14T01:34:00.283+05:30  INFO 25420 --- [eureka-server] [           main] c.n.eureka.cluster.PeerEurekaNodes       : Replica node URL:  http://localhost:8761/eureka/
+2026-05-14T01:34:00.295+05:30  INFO 25420 --- [eureka-server] [           main] c.n.e.registry.AbstractInstanceRegistry  : Finished initializing remote region registries. All known remote regions: []
+2026-05-14T01:34:00.297+05:30  INFO 25420 --- [eureka-server] [           main] c.n.eureka.DefaultEurekaServerContext    : Initialized
+2026-05-14T01:34:00.315+05:30  INFO 25420 --- [eureka-server] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-05-14T01:34:00.405+05:30  INFO 25420 --- [eureka-server] [           main] o.s.c.n.e.s.EurekaServiceRegistry        : Registering application EUREKA-SERVER with eureka with status UP
+2026-05-14T01:34:00.424+05:30  INFO 25420 --- [eureka-server] [       Thread-9] o.s.c.n.e.server.EurekaServerBootstrap   : isAws returned false
+2026-05-14T01:34:00.426+05:30  INFO 25420 --- [eureka-server] [       Thread-9] o.s.c.n.e.server.EurekaServerBootstrap   : Initialized server context
+2026-05-14T01:34:00.426+05:30  INFO 25420 --- [eureka-server] [       Thread-9] c.n.e.r.PeerAwareInstanceRegistryImpl    : Got 1 instances from neighboring DS node
+2026-05-14T01:34:00.427+05:30  INFO 25420 --- [eureka-server] [       Thread-9] c.n.e.r.PeerAwareInstanceRegistryImpl    : Renew threshold is: 1
+2026-05-14T01:34:00.429+05:30  INFO 25420 --- [eureka-server] [       Thread-9] c.n.e.r.PeerAwareInstanceRegistryImpl    : Changing status to UP
+2026-05-14T01:34:00.431+05:30  INFO 25420 --- [eureka-server] [       Thread-9] e.s.EurekaServerInitializerConfiguration : Started Eureka Server
+2026-05-14T01:34:00.450+05:30  INFO 25420 --- [eureka-server] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8761 (http) with context path '/'
+2026-05-14T01:34:00.452+05:30  INFO 25420 --- [eureka-server] [           main] .s.c.n.e.s.EurekaAutoServiceRegistration : Updating port to 8761
+2026-05-14T01:34:00.477+05:30  INFO 25420 --- [eureka-server] [           main] c.m.eureka.EurekaServerApplication       : Started EurekaServerApplication in 6.672 seconds (process running for 7.34)
+2026-05-14T01:34:14.383+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-14T01:34:14.384+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-05-14T01:34:14.387+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-05-14T01:34:14.526+05:30  WARN 25420 --- [eureka-server] [nio-8761-exec-2] c.n.e.registry.AbstractInstanceRegistry  : DS: Registry: lease doesn't exist, registering resource: CONFIG-SERVER - LAPTOP-C199JAVR.mshome.net:config-server:8888
+2026-05-14T01:34:14.527+05:30  WARN 25420 --- [eureka-server] [nio-8761-exec-2] c.n.eureka.resources.InstanceResource    : Not Found (Renew): CONFIG-SERVER - LAPTOP-C199JAVR.mshome.net:config-server:8888
+2026-05-14T01:34:14.758+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-3] c.n.e.registry.AbstractInstanceRegistry  : Registered instance CONFIG-SERVER/LAPTOP-C199JAVR.mshome.net:config-server:8888 with status UP (replication=false)
+2026-05-14T01:34:14.758+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-5] c.n.e.registry.AbstractInstanceRegistry  : Registered instance CONFIG-SERVER/LAPTOP-C199JAVR.mshome.net:config-server:8888 with status UP (replication=false)
+2026-05-14T01:34:15.014+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-6] c.n.e.registry.AbstractInstanceRegistry  : Registered instance API-GATEWAY/LAPTOP-C199JAVR.mshome.net:api-gateway:8080 with status UP (replication=false)
+2026-05-14T01:34:15.464+05:30  WARN 25420 --- [eureka-server] [nio-8761-exec-7] c.n.e.registry.AbstractInstanceRegistry  : There is an existing lease and the existing lease's dirty timestamp 1778702654722 is greater than the one that is being registered 1778702624274
+2026-05-14T01:34:15.464+05:30  WARN 25420 --- [eureka-server] [nio-8761-exec-7] c.n.e.registry.AbstractInstanceRegistry  : Using the existing instanceInfo instead of the new instanceInfo as the registrant
+2026-05-14T01:34:15.465+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-7] c.n.e.registry.AbstractInstanceRegistry  : Registered instance CONFIG-SERVER/LAPTOP-C199JAVR.mshome.net:config-server:8888 with status UP (replication=true)
+2026-05-14T01:34:15.466+05:30  INFO 25420 --- [eureka-server] [nio-8761-exec-7] c.n.e.registry.AbstractInstanceRegistry  : Registered instance API-GATEWAY/LAPTOP-C199JAVR.mshome.net:api-gateway:8080 with status UP (replication=true)

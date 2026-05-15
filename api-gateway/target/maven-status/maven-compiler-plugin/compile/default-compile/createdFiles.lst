@@ -1,0 +1,3 @@
+com\medibook\gateway\filter\AuthFilter.class
+com\medibook\gateway\ApiGatewayApplication.class
+com\medibook\gateway\config\JwtUtil.class

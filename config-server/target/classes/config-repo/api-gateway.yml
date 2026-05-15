@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "http://localhost:5173,http://localhost:5174"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Auth Service
+        url: /v3/api-docs/auth
+      - name: Appointment Service
+        url: /v3/api-docs/appointment
+      - name: Provider Service
+        url: /v3/api-docs/provider
+      - name: Schedule Service
+        url: /v3/api-docs/schedule
+      - name: Payment Service
+        url: /v3/api-docs/payment
+      - name: Review Service
+        url: /v3/api-docs/review
+      - name: Notification Service
+        url: /v3/api-docs/notification
+      - name: Record Service
+        url: /v3/api-docs/record

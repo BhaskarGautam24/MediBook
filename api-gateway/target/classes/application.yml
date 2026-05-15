@@ -1,0 +1,211 @@
+﻿spring:
+  application:
+    name: api-gateway
+  config:
+    import: optional:configserver:http://localhost:8888
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "http://localhost:5174"
+              - "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        # --- Auth Service ---
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
+
+        - id: auth-oauth2
+          uri: lb://auth-service
+          predicates:
+            - Path=/login/oauth2/**, /oauth2/**
+          filters:
+            - StripPrefix=0
+
+        # --- Admin User endpoints â†’ Auth Service ---
+        - id: admin-users
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/admin/users/**, /api/admin/stats
+          filters:
+            - StripPrefix=0
+
+        # --- Provider Slots â†’ Schedule Service (must be before provider catch-all) ---
+        - id: provider-slots
+          uri: lb://schedule-service
+          predicates:
+            - Path=/api/providers/*/slots, /api/providers/*/slots/**
+          filters:
+            - StripPrefix=0
+
+        # --- Provider Service ---
+        - id: provider-service
+          uri: lb://provider-service
+          predicates:
+            - Path=/api/providers/**
+          filters:
+            - StripPrefix=0
+
+        # --- Admin Provider endpoints â†’ Provider Service ---
+        - id: admin-providers
+          uri: lb://provider-service
+          predicates:
+            - Path=/api/admin/providers/**
+          filters:
+            - StripPrefix=0
+
+        # --- Schedule Service (Slots) ---
+        - id: schedule-service
+          uri: lb://schedule-service
+          predicates:
+            - Path=/api/slots/**
+          filters:
+            - StripPrefix=0
+
+        # --- Appointment Service ---
+        - id: appointment-service
+          uri: lb://appointment-service
+          predicates:
+            - Path=/api/appointments/**
+          filters:
+            - StripPrefix=0
+
+        # --- Admin Appointment endpoints ---
+        - id: admin-appointments
+          uri: lb://appointment-service
+          predicates:
+            - Path=/api/admin/appointments/**
+          filters:
+            - StripPrefix=0
+
+        # --- Payment Service ---
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - StripPrefix=0
+
+        # --- Review Service ---
+        - id: review-service
+          uri: lb://review-service
+          predicates:
+            - Path=/api/reviews/**
+          filters:
+            - StripPrefix=0
+
+        # --- Admin Review endpoints ---
+        - id: admin-reviews
+          uri: lb://review-service
+          predicates:
+            - Path=/api/admin/reviews/**
+          filters:
+            - StripPrefix=0
+
+        # --- Notification Service ---
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**
+          filters:
+            - StripPrefix=0
+
+        # --- Record Service ---
+        - id: record-service
+          uri: lb://record-service
+          predicates:
+            - Path=/api/records/**
+          filters:
+            - StripPrefix=0
+
+        # --- Admin Record endpoints ---
+        - id: admin-records
+          uri: lb://record-service
+          predicates:
+            - Path=/api/admin/records/**
+          filters:
+            - StripPrefix=0
+
+
+        # --- Swagger Routes ---
+        - id: auth-swagger
+          uri: lb://auth-service
+          predicates:
+            - Path=/v3/api-docs/auth
+          filters:
+            - RewritePath=/v3/api-docs/auth, /v3/api-docs
+
+        - id: appointment-swagger
+          uri: lb://appointment-service
+          predicates:
+            - Path=/v3/api-docs/appointment
+          filters:
+            - RewritePath=/v3/api-docs/appointment, /v3/api-docs
+
+        - id: provider-swagger
+          uri: lb://provider-service
+          predicates:
+            - Path=/v3/api-docs/provider
+          filters:
+            - RewritePath=/v3/api-docs/provider, /v3/api-docs
+
+        - id: schedule-swagger
+          uri: lb://schedule-service
+          predicates:
+            - Path=/v3/api-docs/schedule
+          filters:
+            - RewritePath=/v3/api-docs/schedule, /v3/api-docs
+
+        - id: payment-swagger
+          uri: lb://payment-service
+          predicates:
+            - Path=/v3/api-docs/payment
+          filters:
+            - RewritePath=/v3/api-docs/payment, /v3/api-docs
+
+        - id: review-swagger
+          uri: lb://review-service
+          predicates:
+            - Path=/v3/api-docs/review
+          filters:
+            - RewritePath=/v3/api-docs/review, /v3/api-docs
+
+        - id: notification-swagger
+          uri: lb://notification-service
+          predicates:
+            - Path=/v3/api-docs/notification
+          filters:
+            - RewritePath=/v3/api-docs/notification, /v3/api-docs
+
+        - id: record-swagger
+          uri: lb://record-service
+          predicates:
+            - Path=/v3/api-docs/record
+          filters:
+            - RewritePath=/v3/api-docs/record, /v3/api-docs
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+app:
+  jwt:
+    secret: MediBookSecretKey2026ForJWTTokenSigningPurposeMustBe256BitsLongAtLeast
+
+
+

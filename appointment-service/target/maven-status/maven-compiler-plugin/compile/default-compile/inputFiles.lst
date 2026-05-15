@@ -1,0 +1,16 @@
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\AppointmentServiceApplication.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\client\AuthClient.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\client\NotificationClient.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\client\PaymentClient.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\client\ProviderClient.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\client\ScheduleClient.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\config\OpenApiConfig.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\controller\AdminAppointmentController.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\controller\AppointmentController.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\controller\InternalAppointmentController.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\dto\BookingRequest.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\entity\Appointment.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\enums\AppointmentStatus.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\exception\GlobalExceptionHandler.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\repository\AppointmentRepository.java
+D:\MediBook\appointment-service\src\main\java\com\medibook\appointment\service\AppointmentService.java
